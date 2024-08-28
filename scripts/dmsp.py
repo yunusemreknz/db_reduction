@@ -6,7 +6,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
-# Argument parser to handle input and output files
 parser = argparse.ArgumentParser(description='''Predicts the detectability of input peptides using a single dimension
                                                 Convolutional Neural Network, based on Tensorflow 1.13.1
                                                 Requirements: Tensorflow 1.13.1''')
@@ -16,7 +15,6 @@ parser.add_argument('outfile', type=str,
                     help='File to save the prediction results')
 args = parser.parse_args()
 
-# Function to load and codify peptides in chunks
 def load_pep_and_codify_chunk(file, max_len, start_idx, end_idx):
     aa_dict = {
         'A': 1, 'R': 2, 'N': 3, 'D': 4, 'C': 5, 'Q': 6, 'E': 7, 'G': 8, 'H': 9, 'I': 10, 'L': 11, 'K': 12,
@@ -55,13 +53,11 @@ except Exception as e:
     print(f'Error loading model: {e}')
     exit(1)
 
-# Function to count the total number of lines in the input file
 def count_lines_in_file(file):
     with open(file, 'r') as f:
         return sum(1 for _ in f)
 
-# Main processing loop for chunking
-chunk_size = 100000  # Adjust this based on your available memory
+chunk_size = 100000  # Adjust based on available memory
 total_peptides = count_lines_in_file(args.infile)
 start_idx = 0
 
@@ -69,24 +65,20 @@ total_long_pep_counter = 0
 total_invalid_pep_counter = 0
 total_processed = 0
 
-# Open output file and write the header
 with open(args.outfile, 'w') as outf:
     outf.write('Header\tPeptide\tProb\tDetectability\n')
     
     while start_idx < total_peptides:
         end_idx = min(start_idx + chunk_size, total_peptides)
-        
-        # Load and process a chunk of peptides
+      
         predict_data, long_pep_counter, invalid_pep_counter, lines, accessions = load_pep_and_codify_chunk(args.infile, 81, start_idx, end_idx)
         
-        if len(lines) == 0:  # Skip empty chunks (in case all peptides were invalid or too long)
+        if len(lines) == 0:
             start_idx += chunk_size
             continue
         
-        # Make predictions on the chunk
         model_2_1D_pred = model_2_1D.predict(predict_data)
         
-        # Process and save predictions
         model_2_1D_pred = np.hstack((np.array(lines).reshape(len(lines), 1), model_2_1D_pred)).tolist()
         
         Pred_output = []
@@ -96,11 +88,9 @@ with open(args.outfile, 'w') as outf:
             else:
                 Pred_output.append([accessions[i], pred[0], str(1 - float(pred[1])), '1'])
         
-        # Append predictions to the output file
         with open(args.outfile, 'a') as outf:
             outf.writelines('\t'.join(i) + '\n' for i in Pred_output)
         
-        # Update counters
         total_long_pep_counter += long_pep_counter
         total_invalid_pep_counter += invalid_pep_counter
         total_processed += len(lines)
@@ -122,4 +112,3 @@ print('Finished processing all peptides.')
 print(f'Total peptides processed: {total_processed}')
 print(f'Total long peptides skipped: {total_long_pep_counter}')
 print(f'Total invalid peptides skipped: {total_invalid_pep_counter}')
-
