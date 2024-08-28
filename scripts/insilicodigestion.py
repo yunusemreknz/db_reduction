@@ -4,7 +4,6 @@ from Bio import SeqIO
 import os
 
 def main():
-    # Argument parser für snakemake
     arg_parser = argparse.ArgumentParser(description="Perform in silico digestion on a FASTA file.")
     arg_parser.add_argument('fasta_file', type=str, help='Path to the input FASTA file')
     arg_parser.add_argument('output_file', type=str, help='Path to the output file')
@@ -19,7 +18,7 @@ def main():
             for record in SeqIO.parse(handle, "fasta"):
                 header = record.description
                 sequence = str(record.seq)
-                indexed_peptides = parser.xcleave(sequence, parser.expasy_rules['trypsin'], missed_cleavages=2) # Standard trypsin mit mc=2 --> change to diff number
+                indexed_peptides = parser.xcleave(sequence, parser.expasy_rules['trypsin'], missed_cleavages=2) # Standard trypsin digestion change if needed
                 for _, peptide in indexed_peptides:
                     output_file.write(f"{header}\t{peptide}\n")
 
