@@ -1,5 +1,0 @@
-Building DAG of jobs...
-MissingInputException in rule all in file /home/emre/Schreibtisch/db_reduction/Snakefile, line 3:
-Missing input files for rule all:
-    affected files:
-        reducedfasta/_filtered.fasta
