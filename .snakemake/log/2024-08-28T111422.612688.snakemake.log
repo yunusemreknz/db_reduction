@@ -1,0 +1,71 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count    min threads    max threads
+-----------------  -------  -------------  -------------
+all                      1              1              1
+createfasta              1              1              1
+dmsp                     1              1              1
+insilicodigestion        1              1              1
+total                    4              1              1
+
+Select jobs to execute...
+
+[Wed Aug 28 11:14:22 2024]
+rule insilicodigestion:
+    input: data/4MUM_DB.fasta
+    output: data/4MUM_DB_trypsin_digestion.txt
+    jobid: 3
+    reason: Missing output files: data/4MUM_DB_trypsin_digestion.txt
+    wildcards: sample=4MUM_DB
+    resources: tmpdir=/tmp
+
+Activating conda environment: deepmspeptide2
+[Wed Aug 28 11:14:26 2024]
+Finished job 3.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Wed Aug 28 11:14:26 2024]
+rule dmsp:
+    input: data/4MUM_DB_trypsin_digestion.txt, model/model_2_1D.h5
+    output: data/4MUM_DB_trypsin_digestion.Predictions.txt
+    jobid: 2
+    reason: Missing output files: data/4MUM_DB_trypsin_digestion.Predictions.txt; Input files updated by another job: data/4MUM_DB_trypsin_digestion.txt
+    wildcards: sample=4MUM_DB
+    resources: tmpdir=/tmp
+
+Activating conda environment: deepmspeptide2
+[Wed Aug 28 11:15:57 2024]
+Finished job 2.
+2 of 4 steps (50%) done
+Select jobs to execute...
+
+[Wed Aug 28 11:15:57 2024]
+rule createfasta:
+    input: data/4MUM_DB_trypsin_digestion.Predictions.txt
+    output: reducedfasta/4MUM_DB_filtered.fasta
+    jobid: 1
+    reason: Missing output files: reducedfasta/4MUM_DB_filtered.fasta; Input files updated by another job: data/4MUM_DB_trypsin_digestion.Predictions.txt
+    wildcards: sample=4MUM_DB
+    resources: tmpdir=/tmp
+
+Activating conda environment: deepmspeptide2
+[Wed Aug 28 11:15:58 2024]
+Finished job 1.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Wed Aug 28 11:15:58 2024]
+localrule all:
+    input: reducedfasta/4MUM_DB_filtered.fasta
+    jobid: 0
+    reason: Input files updated by another job: reducedfasta/4MUM_DB_filtered.fasta
+    resources: tmpdir=/tmp
+
+[Wed Aug 28 11:15:58 2024]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: .snakemake/log/2024-08-28T111422.612688.snakemake.log

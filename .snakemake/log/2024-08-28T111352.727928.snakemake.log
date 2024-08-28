@@ -1,0 +1,7 @@
+Building DAG of jobs...
+MissingInputException in rule insilicodigestion in file /home/emre/Schreibtisch/db_reduction/Snakefile, line 7:
+Missing input files for rule insilicodigestion:
+    output: data/9MM_DB_trypsin_digestion.txt
+    wildcards: sample=9MM_DB
+    affected files:
+        data/9MM_DB.fasta

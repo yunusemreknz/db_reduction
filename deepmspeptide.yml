@@ -1,0 +1,15 @@
+name: deepmspeptide2
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7
+  - snakemake
+  - biopython
+  - pip
+  - pip:
+    - pyteomics
+    - protobuf==3.19.6
+    - tensorflow==1.13.1
+    - snakemake
