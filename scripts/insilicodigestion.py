@@ -12,7 +12,7 @@ def main():
     fasta_file = args.fasta_file
     output_file_name = args.output_file
 
-    # Digestion startet hier --> ungünstiges Header speichern --> CHANGE!?
+    # Try another Header-saving method
     with open(output_file_name, 'w') as output_file:
         with open(fasta_file, "r") as handle:
             for record in SeqIO.parse(handle, "fasta"):
