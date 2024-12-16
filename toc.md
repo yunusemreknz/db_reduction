@@ -1,13 +1,3 @@
----
-title: "Table of Content"
-output: 
-  html_document: 
-    keep_md: true
-date: "2024-12-15"
----
-
-
-
 ## <u>Introduction</u>
 - Background to the COVID-19 pandemic and the importance of contact tracing
 - Overview of the Corona-Warn-App (CWA) and its goal --> Privacy-Preserving Contact Tracing
